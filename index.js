@@ -10,15 +10,15 @@ const Product = require("./model/product");
 const admin = require("firebase-admin")
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
 
+if(!admin.apps.length){
+  admin.initializeApp({
+    credential:
+    admin.credential.cert(serviceAccount)
+    ,
+    storageBucket : 'gs://e-commerce-backend-bfa60.appspot.com',
+  })
+}
 
-
-
-admin.initializeApp({
-  credential:
-  admin.credential.cert(serviceAccount)
-  ,
-  storageBucket : 'gs://e-commerce-backend-bfa60.appspot.com',
-})
 
 
 const app = express();
