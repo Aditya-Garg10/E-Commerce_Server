@@ -112,33 +112,33 @@ app.use("/", productRoute);
 
 
 
-const storage = multer.diskStorage({
-  destination: "upload/images",
-  filename: (req, file, cb) => {
-    return cb(
-      null,
-      `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
-    ); // Appending extension
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: "upload/images",
+//   filename: (req, file, cb) => {
+//     return cb(
+//       null,
+//       `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
+//     ); // Appending extension
+//   },
+// });
 
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1024 * 1024 * 5 }, // 5 MB file size limit
-  fileFilter: function (req, file, cb) {
-    const fileTypes = /jpeg|jpg|png|webp/;
-    const mimetype = fileTypes.test(file.mimetype);
-    const extname = fileTypes.test(
-      path.extname(file.originalname).toLowerCase()
-    );
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 1024 * 1024 * 5 }, // 5 MB file size limit
+//   fileFilter: function (req, file, cb) {
+//     const fileTypes = /jpeg|jpg|png|webp/;
+//     const mimetype = fileTypes.test(file.mimetype);
+//     const extname = fileTypes.test(
+//       path.extname(file.originalname).toLowerCase()
+//     );
     
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb(new Error("Only .jpeg, .jpg, and .png files are allowed"));
-    }
-  },
-});
+//     if (mimetype && extname) {
+//       return cb(null, true);
+//     } else {
+//       cb(new Error("Only .jpeg, .jpg, and .png files are allowed"));
+//     }
+//   },
+// });
 
 
 const uploadToFirebase = async(file) => {
@@ -176,7 +176,7 @@ const uploadToFirebase = async(file) => {
   
   
   // Endpoint to upload up to 4 images
-  app.post("/upload", upload.array("images", 4), async (req, res) => {
+  app.post("/upload", async (req, res) => {
     let products = await Product.Product.find({});
     let id;
     if (products.length > 0) {
